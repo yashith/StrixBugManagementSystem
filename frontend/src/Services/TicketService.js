@@ -1,5 +1,5 @@
 import API from './Base';
-import { useReducer, useEffect } from 'react'
+import React,{ useReducer, useEffect,useState} from 'react'
 import axios from 'axios'
 
 const ACTIONS = {
@@ -55,11 +55,12 @@ function reducer(state, action) {
 // }
 
 //fetch tickets by Y
-export default function getTickets() {
-    let arr = []
 
+export default async function GetTickets() {
+    let arr=[]
     API.get('getTicket/')
-        .then(response => { arr.push(response.data) })
+        .then(response=>{arr.push(response)})
         .catch(err=>{console.log(err)})
     return arr
+
 }

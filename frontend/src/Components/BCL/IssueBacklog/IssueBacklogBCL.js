@@ -7,7 +7,8 @@ import './table.css';
 import { render } from '@testing-library/react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import './IssueBacklogBCL.scss'
-import getTickets from '../../../Services/TicketService';
+import GetTickets from '../../../Services/TicketService';
+import API from '../../../Services/Base';
 
 
 //my
@@ -27,6 +28,7 @@ function IssueBacklogBCL() {
 
   const [isModelOpen, setisModelOpen] = useState(false);
   const [buglist, setbuglist] = useState([])
+  const [buglist2,setbuglist2]=useState([])
 
   function tableticket(e) {
     for (var i = 0; i < buglist.length; i++) {
@@ -37,8 +39,10 @@ function IssueBacklogBCL() {
 
   }
   useEffect(() => {
-    console.log(getTickets())
-     
+    
+    API.get('getTicket/')
+    .then(response=>setbuglist2(response.data))
+   
   },)
 
   return (
@@ -131,15 +135,14 @@ function IssueBacklogBCL() {
                 </thead>
                 <tbody>
                   {
-                    buglist.map((bug) =>
+                    buglist2.map((bug) =>
                       <tr className="highligh" id={bug.id} onClick={() => { tableticket(bug.id) }} key={bug.id}>
                         <td>{'#' + bug.id}</td>
-                        <td className="noover"><div>{bug.title}</div></td>
-                        <td><Badge variant={bagetype(bug.priority)}>{bug.priority}</Badge></td>
+                        <td className="noover"><div>{bug.issuename}</div></td>
+                        <td><Badge variant="Danger">{bug.priority}</Badge></td>
                       </tr>
-                    )
+                    )                    
                   }
-
                 </tbody>
               </Table>
             </Row>
